@@ -12,14 +12,14 @@ public class Product {
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Long id;
 	private String productName;
-	private int year;
+	private int pyear;
 	private double price;
 	private String url;
 	public Product( String productName, int year, double price, String url) {
 		super();
 		
 		this.productName = productName;
-		this.year = year;
+		this.pyear = year;
 		this.price = price;
 		this.url = url;
 	}
@@ -28,7 +28,7 @@ public class Product {
 	}
 	@Override
 	public String toString() {
-		return "Product [id=" + id + ", productName=" + productName + ", year=" + year + ", price=" + price + ", url="
+		return "Product [id=" + id + ", productName=" + productName + ", year=" + pyear + ", price=" + price + ", url="
 				+ url + "]";
 	}
 	public Long getId() {
@@ -44,10 +44,10 @@ public class Product {
 		this.productName = productName;
 	}
 	public int getYear() {
-		return year;
+		return pyear;
 	}
 	public void setYear(int year) {
-		this.year = year;
+		this.pyear = year;
 	}
 	public double getPrice() {
 		return price;
