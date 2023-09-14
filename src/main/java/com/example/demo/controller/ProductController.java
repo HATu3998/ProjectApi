@@ -9,6 +9,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -39,7 +40,27 @@ public class ProductController {
 	
 	@PostMapping("/insert")
 	public ResponseEntity<ResponseObject> insertProduct(@RequestBody Product newProduct){
+		List<Product> foundProduct=reposity.findByProductName(newProduct.getProductName().trim());
+		if(foundProduct.size()>0) {
+			return ResponseEntity.status(HttpStatus.NOT_IMPLEMENTED).body(new ResponseObject("failed","product name already taken", ""));
+		}
 		return ResponseEntity.status(HttpStatus.OK).body(new ResponseObject("ok","insert product suscess", reposity.save(newProduct)));
 		
+	}
+	
+	@PutMapping("/{id}")
+	public ResponseEntity<ResponseObject> updateProduct(@RequestBody Product newProduct,@PathVariable Long id){
+		Product updateP=reposity.findById(id).map(
+product -> {
+	product.setProductName(newProduct.getProductName());
+	product.setPrice(newProduct.getPrice());
+	product.setYear(newProduct.getYear());
+	return reposity.save(product);
+}
+				).orElseGet(()->{
+					newProduct.setId(id);
+					return reposity.save(newProduct);
+				});
+		return ResponseEntity.status(HttpStatus.OK).body(new ResponseObject("ok","update suscess", updateP));
 	}
 }
