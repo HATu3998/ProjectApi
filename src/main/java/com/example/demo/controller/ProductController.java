@@ -25,7 +25,7 @@ public class ProductController {
 		return reposity.findAll();
 	}
 	@GetMapping("/{id}")
-	public Optional<Product> findId(@PathVariable Long id){
-		return reposity.findById(id);
+	public Product findId(@PathVariable Long id){
+		return reposity.findById(id).orElseThrow(()->new RuntimeException("cannot find product with id "+id));
 	}
 }
